@@ -1,0 +1,7 @@
+# Generated PSD output — do not commit
+psds/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
