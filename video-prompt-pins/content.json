@@ -94,5 +94,13 @@
     "wrong": "he runs across the field",
     "right": "he runs across the field at a constant, even stride — steady frame-to-frame velocity, no sudden speed changes, no pose-to-pose teleporting",
     "never": "Never prompt movement without specifying a constant pace or easing. Speed left to the model’s discretion is what causes stutter, judder, and frame-skipping between poses."
+  },
+  {
+    "num": "13",
+    "topic": "Object Continuity",
+    "prevents": "Object Teleporting & State Errors",
+    "wrong": "she sets the phone on the table",
+    "right": "she sets the same black phone — screen still lit, same orientation — down on the table's left edge; it stays exactly there, unmoved and unchanged, for the rest of the shot",
+    "never": "Never let an object's position, count, or state go unanchored after it's introduced. Unanchored objects are what teleport between hands, duplicate, change appearance, or vanish between frames."
   }
 ]

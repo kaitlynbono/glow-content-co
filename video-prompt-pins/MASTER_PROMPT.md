@@ -29,6 +29,10 @@ distance, speed, and body part explicitly; one action total, at a natural pace]
 MOTION: [state pace explicitly — constant velocity or a named easing, no
 sudden speed changes, no pose-to-pose teleporting between frames]
 
+OBJECTS: [name every key prop with its identity, position, and state —
+e.g. "same black phone, screen lit, left edge of table" — and state
+explicitly that it stays unchanged unless the action line changes it]
+
 CAMERA: [exactly one movement type, or "locked-off static" — never combine
 pan + zoom + dolly in the same generation]
 
@@ -63,6 +67,7 @@ For shot 2+ in a sequence: copy the SUBJECT, ENVIRONMENT, and STYLE lines from s
 | 10 | Never reword a character or setting description between shots in one sequence. | Drift across cuts |
 | 11 | Never ask a video model to render legible on-screen text. | Garbled text artifacts |
 | 12 | Never prompt movement without specifying a constant pace or easing. | Stutter & judder |
+| 13 | Never let an object's position, count, or state go unanchored after it's introduced. | Object teleporting & state errors |
 
 ---
 
@@ -74,8 +79,9 @@ For shot 2+ in a sequence: copy the SUBJECT, ENVIRONMENT, and STYLE lines from s
 - [ ] Any flicker in brightness or color between frames? → fix **Lighting**
 - [ ] Hands/fingers intact through the whole grip-and-release? → fix **Action**
 - [ ] Does motion move at a steady pace, or stutter/skip between poses? → fix **Motion**
+- [ ] Do key objects hold their position, count, and appearance, or do they teleport/duplicate/vanish/change state on their own? → fix **Objects**
 - [ ] Does the look stay consistent start to end, or shift style mid-clip? → fix **Style**
-- [ ] Any of the 12 never-rules violated? → fix that pillar only, then regenerate
+- [ ] Any of the 13 never-rules violated? → fix that pillar only, then regenerate
 
 ---
 
@@ -87,6 +93,7 @@ ENVIRONMENT: rain-slicked city street at dusk, wet asphalt reflecting neon signa
 LIGHTING: mixed warm streetlamp key from camera left + cool blue ambient fill, fixed 3200K/6500K balance, no change through the clip
 ACTION: she walks forward at a steady, even pace, arms swinging naturally, no rushing
 MOTION: constant walking pace throughout, no speed changes, no teleporting between strides
+OBJECTS: same tan leather handbag on her right shoulder, strap position fixed, unchanged for the full shot
 CAMERA: locked-off static tripod shot, no camera movement
 STYLE: 35mm film grain, muted teal-and-orange grade, shallow depth of field at f/2.8
 NEGATIVE PROMPT: no text overlays, no extra limbs, no camera cuts, no background characters, no motion blur on the face
