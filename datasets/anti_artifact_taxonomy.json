@@ -1,0 +1,113 @@
+{
+  "title": "Anti-Artifact Object-Continuity Detection Taxonomy",
+  "source": "Derived from the 'Anti-Artifact Object-Continuity Detection in Video' report (sections 2-8) attached to this repo's prompt-engineering request.",
+  "purpose": "Reference schema shared by datasets/anti_artifact_examples.jsonl, the prompts/*.md templates, and scripts/validate_video.py -- used to QA AI-generated video (e.g. Runway clips for Pinterest/Etsy content) for continuity glitches before publishing.",
+
+  "artifact_types": [
+    {
+      "id": "identity_inconsistency",
+      "description": "A single object 'flips' identity between frames (changes color, clothing, material, face) even though it should have a persistent appearance.",
+      "primary_signal": "persistent-ID tracking (ByteTrack); a lost/re-assigned track ID at an unchanged bbox location.",
+      "event_code": "E01_IDENTITY_SWAP"
+    },
+    {
+      "id": "temporal_flicker",
+      "description": "Small jittery color/pixel noise between frames, often from weak cross-frame alignment.",
+      "primary_signal": "drop in frame-to-frame embedding cosine similarity (Temporal Consistency Score) without a corresponding freeze.",
+      "event_code": "E02_TEMPORAL_FLICKER"
+    },
+    {
+      "id": "frozen_frame",
+      "description": "Video stalls on one frame (near-identical repeats) for an unnatural duration.",
+      "primary_signal": "run of consecutive frame hashes within freeze_hamming of each other, longer than freeze_min_run.",
+      "event_code": "E04_FREEZE_RUN"
+    },
+    {
+      "id": "frame_recreation_loop",
+      "description": "A segment of video repeats periodically (A->B->C->A->B->C) or resets exactly to an earlier frame; includes non-consecutive near-duplicate frames.",
+      "primary_signal": "non-adjacent frame hash comparison at fixed lags; exact match = reset, small hamming distance = near-duplicate, periodic low distance = loop.",
+      "event_code": "E05_FRAME_RECREATION_RESET / E06_SEQUENCE_LOOP / E03_NEAR_DUPLICATE_NONLOCAL"
+    },
+    {
+      "id": "semantic_rollback",
+      "description": "An object or character inexplicably reverts to an earlier semantic state (an accessory reappears, a cut fruit becomes whole, a fall is undone) without the frames necessarily being pixel-identical.",
+      "primary_signal": "state-machine / interaction logic check on known object states, or a near-match against an earlier frame hash.",
+      "event_code": "E05_FRAME_RECREATION_RESET (state-level; not always a literal frame match -- see notes)"
+    },
+    {
+      "id": "extra_object",
+      "description": "An additional instance of an object class appears without a valid cause (duplication, splitting).",
+      "primary_signal": "tracked object count for a class exceeds the expected/prior count.",
+      "event_code": "A_COUNT_MISMATCH"
+    },
+    {
+      "id": "object_count_error",
+      "description": "The count of a known object class doesn't match what the scene establishes or implies (e.g. a basket that should hold N items).",
+      "primary_signal": "tracked count vs. an externally supplied expected count (--expected on the validator).",
+      "event_code": "A_COUNT_MISMATCH / A_COUNT_CHANGE (no expected baseline supplied)"
+    },
+    {
+      "id": "geometry_violation",
+      "description": "Sudden non-physical bounding-box/shape change for a tracked object: jump in position, size, or aspect ratio inconsistent with plausible motion.",
+      "primary_signal": "frame-to-frame bbox center shift, area ratio, or aspect ratio ratio beyond threshold.",
+      "event_code": "B01_BBOX_JUMP_CANDIDATE / B03_SIZE_DRIFT_CANDIDATE / B04_ASPECT_RATIO_DRIFT_CANDIDATE"
+    },
+    {
+      "id": "state_transition",
+      "description": "An object's location or interaction state changes in a way that skips the physically-required intermediate motion (teleport, unexplained relocation, reversed motion).",
+      "primary_signal": "large normalized bbox center shift between consecutive tracked frames for the same ID.",
+      "event_code": "C01_TELEPORT_CANDIDATE"
+    }
+  ],
+
+  "event_codes": {
+    "notes": "Codes E03-E06, A_COUNT_MISMATCH, A_COUNT_CHANGE, B03, B04, and C01 are verbatim from the source report's event-code/severity table. That table's rows for E01, E02, B01, and B02 were blank in the source (truncated numbering gap between E03 and B03) -- this file fills them in with codes consistent with the report's own narrative (identity inconsistency in section 2, temporal flicker in section 2/5.1, bbox jump in section 3/6.1) so the validator has a complete 1-13 code set. Severity scale: 1 = informational, 2 = candidate (needs confirmation), 3 = high-confidence / likely real artifact.",
+    "codes": {
+      "E01_IDENTITY_SWAP": { "severity": 3, "inferred": true, "checked_by": "detection_checks (tracker lost/reassigned ID)" },
+      "E02_TEMPORAL_FLICKER": { "severity": 1, "inferred": true, "checked_by": "temporal_checks (embedding/hash similarity dip)" },
+      "E03_NEAR_DUPLICATE_NONLOCAL": { "severity": 2, "inferred": false, "checked_by": "temporal_checks" },
+      "E04_FREEZE_RUN": { "severity": 2, "inferred": false, "checked_by": "temporal_checks" },
+      "E05_FRAME_RECREATION_RESET": { "severity": 3, "inferred": false, "checked_by": "temporal_checks" },
+      "E06_SEQUENCE_LOOP": { "severity": 3, "inferred": false, "checked_by": "temporal_checks" },
+      "A_COUNT_MISMATCH": { "severity": 3, "inferred": false, "checked_by": "detection_checks" },
+      "A_COUNT_CHANGE": { "severity": 1, "inferred": false, "checked_by": "detection_checks" },
+      "B01_BBOX_JUMP_CANDIDATE": { "severity": 2, "inferred": true, "checked_by": "detection_checks (large single-frame bbox move, no class/ID change)" },
+      "B02_IOU_DROP_CANDIDATE": { "severity": 2, "inferred": true, "checked_by": "detection_checks (IoU between consecutive-frame boxes for same ID drops sharply)" },
+      "B03_SIZE_DRIFT_CANDIDATE": { "severity": 2, "inferred": false, "checked_by": "detection_checks" },
+      "B04_ASPECT_RATIO_DRIFT_CANDIDATE": { "severity": 2, "inferred": false, "checked_by": "detection_checks" },
+      "C01_TELEPORT_CANDIDATE": { "severity": 3, "inferred": false, "checked_by": "detection_checks" }
+    }
+  },
+
+  "label_schema": {
+    "description": "Flat per-artifact label schema used by prompts/few_shot_labeling.md, prompts/chain_of_thought_labeling.md, and datasets/anti_artifact_examples.jsonl.",
+    "fields": {
+      "scenario": "free-text description of the video segment being labeled",
+      "artifact": "one of artifact_types[].id above",
+      "object": "which tracked object/class has the artifact",
+      "frame": "single frame index where it occurs (use this OR frame_range)",
+      "frame_range": "[start, end] frame indices for artifacts spanning multiple frames",
+      "event_code": "matching code from event_codes.codes above, for cross-referencing automated validator output",
+      "severity": "1-3, copied from event_codes.codes[event_code].severity",
+      "details": "free-text explanation or evidence (optional)"
+    }
+  },
+
+  "dataset_record_schema": {
+    "description": "Richer per-video schema (Table 2 in the source report) for a full labeled dataset, as opposed to the single-artifact flat schema above.",
+    "fields": {
+      "video_id": "unique identifier of the video, e.g. \"vid_00123\"",
+      "frames": "frame count or [start,end] range",
+      "objects": "list of {id, class, bbox[]} tracked objects",
+      "artifact_labels": "list of flat label_schema records for this video",
+      "notes": "free-text explanation"
+    }
+  },
+
+  "validator_pipeline": {
+    "description": "Tiered validator implemented in scripts/validate_video.py.",
+    "tier_1_every_frame": ["frame hashing (dhash64/hamming64) for E03/E04/E05/E06", "mean_abs_diff-based flicker floor"],
+    "tier_2_every_detect_stride_frames": ["object detection + tracking (Detector.track)", "count checks (A_COUNT_MISMATCH/A_COUNT_CHANGE)", "bbox geometry checks (B01/B03/B04)", "teleport check (C01)"],
+    "tier_3_on_flag_only": ["segmentation (SAM2) or optical flow to confirm a flagged segment -- not implemented in scripts/validate_video.py, wire in as a fallback for E01/geometry flags if false-positive rate is too high"]
+  }
+}
