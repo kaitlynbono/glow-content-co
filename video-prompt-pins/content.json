@@ -1,0 +1,130 @@
+[
+  {
+    "num": "01",
+    "topic": "Subject Consistency",
+    "prevents": "Face & Identity Drift",
+    "wrong": "a woman walking in a city",
+    "right": "a 30-year-old woman, shoulder-length red curly hair, tan trench coat, walking steadily forward down a rain-slicked street at dusk — same face and outfit held for the full clip",
+    "never": "Never leave a recurring character’s appearance undescribed after the first shot. Undescribed features are the #1 cause of face and identity drift between frames."
+  },
+  {
+    "num": "02",
+    "topic": "Camera Motion",
+    "prevents": "Warping & Geometry Smear",
+    "wrong": "cool camera movement, cinematic",
+    "right": "locked-off static tripod shot, no camera movement, subject enters frame left and exits frame right",
+    "never": "Never stack more than one camera movement — pan, zoom, dolly — in a single generation. Stacked motions are what cause warping and geometry smearing."
+  },
+  {
+    "num": "03",
+    "topic": "Fast Motion & Detail",
+    "prevents": "Limb & Texture Warping",
+    "wrong": "she spins around quickly in a floral dress, hair flying",
+    "right": "she turns her head slowly, 90 degrees over 2 seconds, plain solid-colored top, minimal hair movement, no spinning or rapid motion",
+    "never": "Never pair fast or rotational motion with high-detail textures, patterns, or loose hair/fabric in the same shot. That combination is the single biggest cause of warping — the model can’t track fine detail fast enough and the geometry smears and melts."
+  },
+  {
+    "num": "04",
+    "topic": "Background Continuity",
+    "prevents": "Morphing Scenery",
+    "wrong": "in a forest",
+    "right": "dense pine forest, tall trees with visible bark texture, soft overcast light, camera fixed so the treeline stays constant through the whole shot",
+    "never": "Never describe a background in one vague word for any shot over 3 seconds. Vague backgrounds get redrawn from scratch every few frames — that’s morphing scenery."
+  },
+  {
+    "num": "05",
+    "topic": "Lighting Continuity",
+    "prevents": "Frame-to-Frame Flicker",
+    "wrong": "nice lighting",
+    "right": "single warm key light, camera left, 45° angle, fixed 3200K color temperature, no lighting change for the duration of the clip",
+    "never": "Never omit a light source and color temperature from the prompt. A missing lighting direction is the leading cause of flicker between frames."
+  },
+  {
+    "num": "06",
+    "topic": "Action & Physics",
+    "prevents": "Melting Hands & Clipping",
+    "wrong": "she picks up the cup",
+    "right": "she reaches with her right hand, wraps four fingers around the handle, lifts it 6 inches straight up at a slow even pace, wrist steady",
+    "never": "Never describe a hand-object interaction in fewer than one full clause. Under-specified hand actions are the top cause of melting fingers and object clipping."
+  },
+  {
+    "num": "07",
+    "topic": "Style Anchoring",
+    "prevents": "Mid-Clip Style Drift",
+    "wrong": "make it look cinematic and artistic",
+    "right": "35mm film grain, muted teal-and-orange grade, shallow depth of field at f/2.8, held constant across every frame",
+    "never": "Never let “cinematic” stand alone as a style instruction. The model has no fixed definition of it and will reinterpret it shot to shot — that’s style drift."
+  },
+  {
+    "num": "08",
+    "topic": "Negative Prompting",
+    "prevents": "Every Known Failure Mode",
+    "wrong": "a person walks across a room",
+    "right": "a person walks across a room — no text overlays, no extra limbs, no camera cuts, no background characters, no motion blur on the face",
+    "never": "Never submit a generation with zero exclusion terms. An empty negative prompt leaves every known failure mode on the table."
+  },
+  {
+    "num": "09",
+    "topic": "Shot Pacing",
+    "prevents": "Rushed, Unnatural Motion",
+    "wrong": "fast-paced action scene, lots happening",
+    "right": "one continuous action at a natural, even pace across the full clip — a single action per generation, nothing more",
+    "never": "Never request more than one major action inside a single short clip. Compressed multi-action prompts are what cause rushed, unnatural motion."
+  },
+  {
+    "num": "10",
+    "topic": "Multi-Shot Identity",
+    "prevents": "Drift Across Cuts",
+    "wrong": "fresh prompt for shot 2, no reference to shot 1",
+    "right": "reuse the exact character, wardrobe, and environment description from shot 1, verbatim — change only the action line",
+    "never": "Never reword a character or setting description between shots in one sequence. Every reworded detail is a new chance for identity drift."
+  },
+  {
+    "num": "11",
+    "topic": "On-Screen Text",
+    "prevents": "Garbled Text Artifacts",
+    "wrong": "sign says ‘Open’",
+    "right": "no legible text anywhere in frame; if signage appears, keep it out of focus and under 10% of frame width",
+    "never": "Never ask a video model to render legible on-screen text. Text rendering is not reliable in current video generation and will come out garbled — every time."
+  },
+  {
+    "num": "12",
+    "topic": "Motion Smoothness",
+    "prevents": "Stutter & Judder",
+    "wrong": "he runs across the field",
+    "right": "he runs across the field at a constant, even stride — steady frame-to-frame velocity, no sudden speed changes, no pose-to-pose teleporting",
+    "never": "Never prompt movement without specifying a constant pace or easing. Speed left to the model’s discretion is what causes stutter, judder, and frame-skipping between poses."
+  },
+  {
+    "num": "13",
+    "topic": "Object Continuity",
+    "prevents": "Object Teleporting & State Errors",
+    "wrong": "she sets the phone on the table",
+    "right": "she sets the same black phone — screen still lit, same orientation — down on the table's left edge; it stays exactly there, unmoved and unchanged, for the rest of the shot",
+    "never": "Never let an object's position, count, or state go unanchored after it's introduced. Unanchored objects are what teleport between hands, duplicate, change appearance, or vanish between frames."
+  },
+  {
+    "num": "14",
+    "topic": "Texture Boiling",
+    "prevents": "Shimmer & Crawling Detail",
+    "wrong": "detailed brick wall texture, close up, sharp focus",
+    "right": "brick wall texture, softly out of focus behind the subject, single fixed exposure and focus held for the whole shot",
+    "never": "Never place fine, repetitive detail — brick, foliage, fabric weave — in sharp focus for a static or slow shot. Static high-frequency detail is what the model can't hold steady frame to frame; it crawls and shimmers instead of sitting still."
+  },
+  {
+    "num": "15",
+    "topic": "Physics Violations",
+    "prevents": "Clipping & Gravity Errors",
+    "wrong": "the ball bounces on the floor",
+    "right": "the ball drops straight down, compresses slightly on impact, rebounds to half its drop height, then settles — a natural, continuous arc",
+    "never": "Never describe a physical interaction without its result. If something falls, bounces, or collides, state what happens on contact — an omitted result is what lets objects clip through surfaces or ignore gravity entirely."
+  },
+  {
+    "num": "16",
+    "topic": "Cross-Shot Lighting",
+    "prevents": "Day-for-Night Flip Between Cuts",
+    "wrong": "shot 2: now it's night",
+    "right": "shot 2 continues immediately after shot 1 — same key light, same color temperature, same shadow direction, same time of day; no lighting reset unless a time-skip is explicitly written",
+    "never": "Never let lighting silently reset between shots in one sequence. Unless a time-skip is explicitly stated, lighting must carry over exactly — otherwise day flips to night or shadows jump direction mid-sequence."
+  }
+]
