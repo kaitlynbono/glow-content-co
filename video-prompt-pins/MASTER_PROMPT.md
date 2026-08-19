@@ -5,7 +5,7 @@ The reusable prompt scaffold behind the *Right vs. Wrong* pin series. Fill in ev
 Framework: **Task → Context → References → Evaluate → Iterate**
 - **Task** — the one action this specific generation must produce (see Pacing below: one action, nothing more)
 - **Context** — Subject + Environment + Lighting + Style, held constant and reused verbatim across every shot in the sequence
-- **References** — the exact wording from a prior shot's Subject/Environment/Style blocks, copied in unchanged, so identity doesn't drift between cuts
+- **References** — the exact wording from a prior shot's Subject/Environment/Lighting/Style blocks, copied in unchanged, so identity and lighting don't drift between cuts
 - **Evaluate** — watch the output against the checklist below before accepting it
 - **Iterate** — when a check fails, fix only the section responsible (see "which pillar" column) and regenerate; don't rewrite the whole prompt
 
@@ -21,10 +21,13 @@ ENVIRONMENT: [specific location + concrete physical details — materials, textu
 what's in the background — nothing left as a single vague noun]
 
 LIGHTING: [light source, direction, and color temperature in Kelvin — e.g.
-"single warm key light, camera left, 45°, 3200K"]
+"single warm key light, camera left, 45°, 3200K" — repeat identically in
+every shot of a sequence unless a time-skip is explicitly stated]
 
 ACTION: [one clause per motion, especially for hands/limbs — describe grip,
-distance, speed, and body part explicitly; one action total, at a natural pace]
+distance, speed, and body part explicitly; one action total, at a natural
+pace; if anything falls, bounces, or collides, state the physical result —
+compression, rebound, settling — not just the motion leading to it]
 
 MOTION: [state pace explicitly — constant velocity or a named easing, no
 sudden speed changes, no pose-to-pose teleporting between frames]
@@ -37,7 +40,9 @@ CAMERA: [exactly one movement type, or "locked-off static" — never combine
 pan + zoom + dolly in the same generation]
 
 STYLE: [concrete technical terms — film stock/grain, color grade, lens/aperture,
-depth of field — never a bare adjective like "cinematic" or "artistic"]
+depth of field — never a bare adjective like "cinematic" or "artistic"; keep
+fine repetitive detail (brick, foliage, weave) softly out of focus rather
+than sharp, so it doesn't shimmer or crawl in a static/slow shot]
 
 NEGATIVE PROMPT: [explicit exclusions — no text overlays, no extra limbs,
 no camera cuts, no background characters, no motion blur on the face, plus
@@ -47,7 +52,7 @@ ON-SCREEN TEXT: none — if signage must appear, keep it out of focus and
 under 10% of frame width
 ```
 
-For shot 2+ in a sequence: copy the SUBJECT, ENVIRONMENT, and STYLE lines from shot 1 **verbatim** — change only the ACTION line.
+For shot 2+ in a sequence: copy the SUBJECT, ENVIRONMENT, LIGHTING, OBJECTS, and STYLE lines from shot 1 **verbatim** — change only the ACTION line (and MOTION/CAMERA if the new action needs it).
 
 ---
 
@@ -68,6 +73,9 @@ For shot 2+ in a sequence: copy the SUBJECT, ENVIRONMENT, and STYLE lines from s
 | 11 | Never ask a video model to render legible on-screen text. | Garbled text artifacts |
 | 12 | Never prompt movement without specifying a constant pace or easing. | Stutter & judder |
 | 13 | Never let an object's position, count, or state go unanchored after it's introduced. | Object teleporting & state errors |
+| 14 | Never place fine, repetitive detail in sharp focus for a static or slow shot. | Texture boiling / shimmer |
+| 15 | Never describe a physical interaction without stating its result. | Clipping & gravity errors |
+| 16 | Never let lighting silently reset between shots in one sequence. | Day-for-night flip between cuts |
 
 ---
 
@@ -80,8 +88,11 @@ For shot 2+ in a sequence: copy the SUBJECT, ENVIRONMENT, and STYLE lines from s
 - [ ] Hands/fingers intact through the whole grip-and-release? → fix **Action**
 - [ ] Does motion move at a steady pace, or stutter/skip between poses? → fix **Motion**
 - [ ] Do key objects hold their position, count, and appearance, or do they teleport/duplicate/vanish/change state on their own? → fix **Objects**
+- [ ] Does fine repetitive detail (brick, foliage, weave) sit still, or does it crawl/shimmer? → fix **Style/Environment**
+- [ ] Do falls, bounces, or collisions resolve naturally, or do objects clip/float? → fix **Action**
+- [ ] Does lighting carry over between shots, or does day flip to night mid-sequence? → fix **Lighting** (via References)
 - [ ] Does the look stay consistent start to end, or shift style mid-clip? → fix **Style**
-- [ ] Any of the 13 never-rules violated? → fix that pillar only, then regenerate
+- [ ] Any of the 16 never-rules violated? → fix that pillar only, then regenerate
 
 ---
 

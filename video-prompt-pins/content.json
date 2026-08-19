@@ -102,5 +102,29 @@
     "wrong": "she sets the phone on the table",
     "right": "she sets the same black phone — screen still lit, same orientation — down on the table's left edge; it stays exactly there, unmoved and unchanged, for the rest of the shot",
     "never": "Never let an object's position, count, or state go unanchored after it's introduced. Unanchored objects are what teleport between hands, duplicate, change appearance, or vanish between frames."
+  },
+  {
+    "num": "14",
+    "topic": "Texture Boiling",
+    "prevents": "Shimmer & Crawling Detail",
+    "wrong": "detailed brick wall texture, close up, sharp focus",
+    "right": "brick wall texture, softly out of focus behind the subject, single fixed exposure and focus held for the whole shot",
+    "never": "Never place fine, repetitive detail — brick, foliage, fabric weave — in sharp focus for a static or slow shot. Static high-frequency detail is what the model can't hold steady frame to frame; it crawls and shimmers instead of sitting still."
+  },
+  {
+    "num": "15",
+    "topic": "Physics Violations",
+    "prevents": "Clipping & Gravity Errors",
+    "wrong": "the ball bounces on the floor",
+    "right": "the ball drops straight down, compresses slightly on impact, rebounds to half its drop height, then settles — a natural, continuous arc",
+    "never": "Never describe a physical interaction without its result. If something falls, bounces, or collides, state what happens on contact — an omitted result is what lets objects clip through surfaces or ignore gravity entirely."
+  },
+  {
+    "num": "16",
+    "topic": "Cross-Shot Lighting",
+    "prevents": "Day-for-Night Flip Between Cuts",
+    "wrong": "shot 2: now it's night",
+    "right": "shot 2 continues immediately after shot 1 — same key light, same color temperature, same shadow direction, same time of day; no lighting reset unless a time-skip is explicitly written",
+    "never": "Never let lighting silently reset between shots in one sequence. Unless a time-skip is explicitly stated, lighting must carry over exactly — otherwise day flips to night or shadows jump direction mid-sequence."
   }
 ]
