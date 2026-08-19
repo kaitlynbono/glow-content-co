@@ -86,5 +86,13 @@
     "wrong": "sign says ‘Open’",
     "right": "no legible text anywhere in frame; if signage appears, keep it out of focus and under 10% of frame width",
     "never": "Never ask a video model to render legible on-screen text. Text rendering is not reliable in current video generation and will come out garbled — every time."
+  },
+  {
+    "num": "12",
+    "topic": "Motion Smoothness",
+    "prevents": "Stutter & Judder",
+    "wrong": "he runs across the field",
+    "right": "he runs across the field at a constant, even stride — steady frame-to-frame velocity, no sudden speed changes, no pose-to-pose teleporting",
+    "never": "Never prompt movement without specifying a constant pace or easing. Speed left to the model’s discretion is what causes stutter, judder, and frame-skipping between poses."
   }
 ]

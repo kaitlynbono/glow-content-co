@@ -26,6 +26,9 @@ LIGHTING: [light source, direction, and color temperature in Kelvin — e.g.
 ACTION: [one clause per motion, especially for hands/limbs — describe grip,
 distance, speed, and body part explicitly; one action total, at a natural pace]
 
+MOTION: [state pace explicitly — constant velocity or a named easing, no
+sudden speed changes, no pose-to-pose teleporting between frames]
+
 CAMERA: [exactly one movement type, or "locked-off static" — never combine
 pan + zoom + dolly in the same generation]
 
@@ -59,6 +62,7 @@ For shot 2+ in a sequence: copy the SUBJECT, ENVIRONMENT, and STYLE lines from s
 | 9 | Never request more than one major action inside a single short clip. | Rushed, unnatural motion |
 | 10 | Never reword a character or setting description between shots in one sequence. | Drift across cuts |
 | 11 | Never ask a video model to render legible on-screen text. | Garbled text artifacts |
+| 12 | Never prompt movement without specifying a constant pace or easing. | Stutter & judder |
 
 ---
 
@@ -69,8 +73,9 @@ For shot 2+ in a sequence: copy the SUBJECT, ENVIRONMENT, and STYLE lines from s
 - [ ] Does the background stay stable, or does it redraw/morph? → fix **Environment**
 - [ ] Any flicker in brightness or color between frames? → fix **Lighting**
 - [ ] Hands/fingers intact through the whole grip-and-release? → fix **Action**
+- [ ] Does motion move at a steady pace, or stutter/skip between poses? → fix **Motion**
 - [ ] Does the look stay consistent start to end, or shift style mid-clip? → fix **Style**
-- [ ] Any of the 11 never-rules violated? → fix that pillar only, then regenerate
+- [ ] Any of the 12 never-rules violated? → fix that pillar only, then regenerate
 
 ---
 
@@ -81,6 +86,7 @@ SUBJECT: 30-year-old woman, shoulder-length red curly hair, tan trench coat
 ENVIRONMENT: rain-slicked city street at dusk, wet asphalt reflecting neon signage, camera fixed so the street layout stays constant
 LIGHTING: mixed warm streetlamp key from camera left + cool blue ambient fill, fixed 3200K/6500K balance, no change through the clip
 ACTION: she walks forward at a steady, even pace, arms swinging naturally, no rushing
+MOTION: constant walking pace throughout, no speed changes, no teleporting between strides
 CAMERA: locked-off static tripod shot, no camera movement
 STYLE: 35mm film grain, muted teal-and-orange grade, shallow depth of field at f/2.8
 NEGATIVE PROMPT: no text overlays, no extra limbs, no camera cuts, no background characters, no motion blur on the face
